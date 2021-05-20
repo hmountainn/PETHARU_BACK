@@ -91,7 +91,7 @@
                                 <tr>
                                     <td><a href="revise-form.html"><%=n.getMeasureDate() %></a></td>
                                     <td class="am"><%=n.getMeasureTime() %></td>
-                                    <td><%=n.getKg()%></td>
+                                    <td><%=n.getKg()%> KG</td>
                                 </tr>
                             <%} %>
 <!--                                 <tr>
