@@ -97,12 +97,12 @@
                                			String hour = time.substring(0,2);
                                			String minute = time.substring(3,5);
                                 	%>
-                                    <td><a href="revise-form.html"><%=date %></a></td>
+                                    <td><a href="revise-form.jsp?id=<%=n.getId()%>"><%=date %></a></td>
                                     <%	
                                     	if(Integer.parseInt(hour)>12){ %>
                                     		<td class="pm"><%=Integer.parseInt(hour)-12%>:<%=minute%> PM</td>
                                     	<%} else{ %>
-                                    		<td class="am"><%=hour%>:<%=minute%> AM</td>
+                                    		<td class="am"><%=Integer.parseInt(hour)%>:<%=minute%> AM</td>
                                     	<%}%>
                                     <td><%=n.getKg()%> KG</td>
                                 </tr>

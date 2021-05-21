@@ -32,6 +32,10 @@ public class WeightRegController extends HttpServlet {
 		String date = req.getParameter("date");
 		String time = req.getParameter("time");
 		String kg = req.getParameter("kg");
+
+		String datetime = date+" "+time;
+		
+		System.out.println(datetime);
 		
 //		SimpleDateFormat trans = new SimpleDateFormat("yy-mm-dd");
 //		DateFormat transtime = new SimpleDateFormat("hh:mm:ss");
@@ -45,8 +49,8 @@ public class WeightRegController extends HttpServlet {
 //			time = (Time) transtime.parse(time_);
 			Weight weight = new Weight();
 			weight.setPetId(1);
-			weight.setMeasureDatetime(time);
-			weight.setKg(Integer.parseInt(kg));
+			weight.setMeasureDatetime(datetime);
+			weight.setKg(Float.parseFloat(kg));
 			weightservice.insert(weight);
 			
 		} catch (ClassNotFoundException e) {

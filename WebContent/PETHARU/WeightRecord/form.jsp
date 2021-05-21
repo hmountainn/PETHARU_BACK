@@ -84,7 +84,7 @@
 	                            <div class="weight-input-container">
 	                                <legend class="d-none">몸무게 입력</legend>
 	                                <label class="img weight">몸무게</label>
-	                                <input class="input-weight" type="number" step="0.1" name="kg">
+	                                <input class="input-weight" type="number" step="0.01" name="kg">
 	                            </div>
 	    
 	                            <div>

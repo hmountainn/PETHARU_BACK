@@ -19,7 +19,8 @@ public class JDBCWeightService implements WeightService {
 		List<Weight> list = new ArrayList<>();
 		
 		String url = "jdbc:oracle:thin:@hi.namoolab.com:1521/xepdb1";
-		String sql = "SELECT * FROM WEIGHT";
+//		String sql = "SELECT * FROM WEIGHT";
+		String sql = "SELECT W.*,SUBSTR(MEASURE_DATETIME,0,10) DA FROM WEIGHT W ORDER BY DA";
 		
 		
 		try {
@@ -68,6 +69,66 @@ public class JDBCWeightService implements WeightService {
 		
 		
 		result = st.executeUpdate();
+		
+		st.close();
+		con.close();
+		
+		return result;
+		
+	}
+	
+	public Weight get(int id) throws ClassNotFoundException, SQLException {
+		Weight weight = null;
+		
+		String url = "jdbc:oracle:thin:@hi.namoolab.com:1521/xepdb1";
+		String sql = "SELECT * FROM WEIGHT WHERE ID="+id;
+		
+		Class.forName("oracle.jdbc.OracleDriver"); 
+		Connection con = DriverManager.getConnection(url, "PETHARU","1357"); //드라이버 로드
+		Statement st = con.createStatement(); //연결생성
+		ResultSet rs = st.executeQuery(sql); //문장실행
+		
+		
+		if(rs.next()) {
+			int petId = rs.getInt("PET_ID");
+			String measureDatetime = rs.getString("MEASURE_DATETIME");
+			float kg = rs.getFloat("KG");
+			
+			weight = new Weight();
+			weight.setId(id);
+			weight.setPetId(petId);
+			weight.setMeasureDatetime(measureDatetime);
+			weight.setKg(kg);
+		}
+		
+		
+		rs.close();
+		st.close();
+		con.close();
+		
+		
+		return weight;
+	}
+
+	public int update(Weight weight) throws ClassNotFoundException, SQLException {
+		int result = 0;
+		
+		String sql = "UPDATE WEIGHT SET MEASURE_DATETIME=?,KG=? WHERE ID=?";
+		
+		String url = "jdbc:oracle:thin:@hi.namoolab.com:1521/xepdb1";
+		Class.forName("oracle.jdbc.OracleDriver"); 
+		Connection con = DriverManager.getConnection(url, "PETHARU","1357"); //드라이버 로드
+		
+		PreparedStatement st = con.prepareStatement(sql);
+		
+		st.setString(1,weight.getMeasureDatetime()); //데이터를 꽂음
+		st.setFloat(2,weight.getKg());
+		st.setInt(3,weight.getId());
+		
+		
+		//executeQuery(): Select
+		//executeUpdate(): Update/Delete/Insert
+		result = st.executeUpdate(); 
 		
 		st.close();
 		con.close();
