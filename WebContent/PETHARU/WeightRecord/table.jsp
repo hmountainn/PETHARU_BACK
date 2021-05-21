@@ -1,13 +1,13 @@
-<%@page import="com.petharu.web.entity.Table"%>
-<%@page import="com.petharu.web.service.TableService"%>
+<%@page import="com.petharu.web.entity.Weight"%>
+<%@page import="com.petharu.web.service.JDBCWeightService"%>
 <%@page import="java.util.List" %>
 <%@page import="java.sql.Time" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
 <%
-	TableService tableservice = new TableService();
-	List<Table> list = tableservice.getList();
+    JDBCWeightService weightservice = new JDBCWeightService();
+    List<Weight> list = weightservice.getList();
 %>
     
 
@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="table-style.css" type="text/css" rel="stylesheet">
-    <script src="table.js"></script>
+<!--     <script src="table.js"></script> -->
 </head>
 <body>
     <div id="root">
@@ -87,10 +87,23 @@
                                 </tr>
                             </thead>
                             <tbody class="tbody">
-                            <%for(Table n : list){ %>
+                            <%for(Weight n : list){ %>
                                 <tr>
-                                    <td><a href="revise-form.html"><%=n.getMeasureDate() %></a></td>
-                                    <td class="am"><%=n.getMeasureTime() %></td>
+                                	<%
+                                		String Datetime = n.getMeasureDatetime();
+                                		String date = Datetime.substring(0,10);
+                                		String time = Datetime.substring(11,16);
+                                		
+                               			String hour = time.substring(0,2);
+                               			String minute = time.substring(3,5);
+                                	%>
+                                    <td><a href="revise-form.html"><%=date %></a></td>
+                                    <%	
+                                    	if(Integer.parseInt(hour)>12){ %>
+                                    		<td class="pm"><%=Integer.parseInt(hour)-12%>:<%=minute%> PM</td>
+                                    	<%} else{ %>
+                                    		<td class="am"><%=hour%>:<%=minute%> AM</td>
+                                    	<%}%>
                                     <td><%=n.getKg()%> KG</td>
                                 </tr>
                             <%} %>

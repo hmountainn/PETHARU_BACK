@@ -15,12 +15,11 @@ window.addEventListener("load",function(){
         console.log(weight);
 
         var con = confirm("정말 기록하시겠습니까?");
-        if(con == true){ //localStorage에 저장
+/*        if(con == true){ //localStorage에 저장
             localStorage.setItem("date",date);
             localStorage.setItem("time",time);
             localStorage.setItem("weight",weight);
-            location.href = "table.html"
-        }
+        }*/
 
     }
 });
