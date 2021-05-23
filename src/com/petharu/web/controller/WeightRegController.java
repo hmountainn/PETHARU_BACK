@@ -19,7 +19,7 @@ import org.apache.catalina.connector.Response;
 import com.petharu.web.entity.Weight;
 import com.petharu.web.service.JDBCWeightService;
 
-@WebServlet("/PETHARU/WeightRecord/WeightReg")
+@WebServlet("/pet-management/weight-record/WeightReg")
 public class WeightRegController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -53,12 +53,8 @@ public class WeightRegController extends HttpServlet {
 			weight.setKg(Float.parseFloat(kg));
 			weightservice.insert(weight);
 			
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			
 		}
 		
 		resp.sendRedirect("table.jsp");

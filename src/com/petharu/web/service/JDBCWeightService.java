@@ -52,89 +52,130 @@ public class JDBCWeightService implements WeightService {
 		return list;
 	}
 	
-	public int insert(Weight weight) throws SQLException, ClassNotFoundException {
+	public int insert(Weight weight) {
 		int result = 0;
 		
 		String sql = "INSERT INTO WEIGHT(PET_ID,MEASURE_DATETIME,KG) VALUES(?,?,?)"; //?에 데이터 꽂아넣을거임
 		
 		String url = "jdbc:oracle:thin:@hi.namoolab.com:1521/xepdb1";
-		Class.forName("oracle.jdbc.OracleDriver"); 
-		Connection con = DriverManager.getConnection(url, "PETHARU","1357"); //드라이버 로드
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "PETHARU","1357"); //드라이버 로드
+			
+			PreparedStatement st = con.prepareStatement(sql);
+			System.out.println(weight.getMeasureDatetime());
+			st.setInt(1,weight.getPetId()); //데이터를 꽂음
+			st.setString(2,weight.getMeasureDatetime());
+			st.setFloat(3, weight.getKg());
+			
+			
+			result = st.executeUpdate();
+			
+			st.close();
+			con.close();
 		
-		PreparedStatement st = con.prepareStatement(sql);
-		System.out.println(weight.getMeasureDatetime());
-		st.setInt(1,weight.getPetId()); //데이터를 꽂음
-		st.setString(2,weight.getMeasureDatetime());
-		st.setFloat(3, weight.getKg());
-		
-		
-		result = st.executeUpdate();
-		
-		st.close();
-		con.close();
-		
+		} catch (Exception e) {
+			throw new ServiceException();
+		}
 		return result;
 		
 	}
 	
-	public Weight get(int id) throws ClassNotFoundException, SQLException {
+	public Weight get(int id) {
 		Weight weight = null;
 		
 		String url = "jdbc:oracle:thin:@hi.namoolab.com:1521/xepdb1";
 		String sql = "SELECT * FROM WEIGHT WHERE ID="+id;
 		
-		Class.forName("oracle.jdbc.OracleDriver"); 
-		Connection con = DriverManager.getConnection(url, "PETHARU","1357"); //드라이버 로드
-		Statement st = con.createStatement(); //연결생성
-		ResultSet rs = st.executeQuery(sql); //문장실행
-		
-		
-		if(rs.next()) {
-			int petId = rs.getInt("PET_ID");
-			String measureDatetime = rs.getString("MEASURE_DATETIME");
-			float kg = rs.getFloat("KG");
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "PETHARU","1357"); //드라이버 로드
+			Statement st = con.createStatement(); //연결생성
+			ResultSet rs = st.executeQuery(sql); //문장실행
 			
-			weight = new Weight();
-			weight.setId(id);
-			weight.setPetId(petId);
-			weight.setMeasureDatetime(measureDatetime);
-			weight.setKg(kg);
+			
+			if(rs.next()) {
+				int petId = rs.getInt("PET_ID");
+				String measureDatetime = rs.getString("MEASURE_DATETIME");
+				float kg = rs.getFloat("KG");
+				
+				weight = new Weight();
+				weight.setId(id);
+				weight.setPetId(petId);
+				weight.setMeasureDatetime(measureDatetime);
+				weight.setKg(kg);
+			}
+			
+			
+			rs.close();
+			st.close();
+			con.close();
+			
+		} catch (Exception e) {
+			throw new ServiceException();
 		}
-		
-		
-		rs.close();
-		st.close();
-		con.close();
 		
 		
 		return weight;
 	}
 
-	public int update(Weight weight) throws ClassNotFoundException, SQLException {
+	public int update(Weight weight) {
 		int result = 0;
 		
 		String sql = "UPDATE WEIGHT SET MEASURE_DATETIME=?,KG=? WHERE ID=?";
 		
 		String url = "jdbc:oracle:thin:@hi.namoolab.com:1521/xepdb1";
-		Class.forName("oracle.jdbc.OracleDriver"); 
-		Connection con = DriverManager.getConnection(url, "PETHARU","1357"); //드라이버 로드
-		
-		PreparedStatement st = con.prepareStatement(sql);
-		
-		st.setString(1,weight.getMeasureDatetime()); //데이터를 꽂음
-		st.setFloat(2,weight.getKg());
-		st.setInt(3,weight.getId());
-		
-		
-		//executeQuery(): Select
-		//executeUpdate(): Update/Delete/Insert
-		result = st.executeUpdate(); 
-		
-		st.close();
-		con.close();
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "PETHARU","1357"); //드라이버 로드
+			
+			PreparedStatement st = con.prepareStatement(sql);
+			
+			st.setString(1,weight.getMeasureDatetime()); //데이터를 꽂음
+			st.setFloat(2,weight.getKg());
+			st.setInt(3,weight.getId());
+			
+			
+			//executeQuery(): Select
+			//executeUpdate(): Update/Delete/Insert
+			result = st.executeUpdate(); 
+			
+			st.close();
+			con.close();
+			
+		} catch (Exception e) {
+			throw new ServiceException();
+		}
 		
 		return result;
 		
+	}
+
+	@Override
+	public int delete(int id) {
+		int result = 0;
+		
+		String sql = "DELETE FROM WEIGHT WHERE ID=?";
+		
+		String url = "jdbc:oracle:thin:@hi.namoolab.com:1521/xepdb1";
+		
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "PETHARU","1357"); //드라이버 로드
+		
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setInt(1, id);
+			
+			result = st.executeUpdate(); 
+			
+			st.close();
+			con.close();
+		
+		} catch (Exception e) {
+			throw new ServiceException();
+		}
+		
+		return result;
 	}
 	
 	

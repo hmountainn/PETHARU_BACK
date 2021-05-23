@@ -111,8 +111,9 @@
                                 	<input type="hidden" name="id" value="<%=id %>">
                                     <input class="btn re" type="submit" value="수정">
                                 </div>
-                                <div>
-                                    <input class="btn delete" type="submit" value="삭제">
+                                <div class="btn delete">
+                                	<a class="link" href="del?id=<%=id %>" onclick="if(!confirm('삭제할겨?')) return false;">삭제</a>
+                                    <!-- <input class="btn delete" type="submit" value="삭제"> -->
                                 </div>
                             </div>
                         </form>
