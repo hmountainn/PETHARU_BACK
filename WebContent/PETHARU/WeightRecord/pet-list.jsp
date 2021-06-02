@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +63,7 @@
                         
                         <div class="pet-list">
                             <div class="pet pet1">
-                                <a href=""><img class="img" src="../../images/pet1.png"></a>
+                                <a href="table?${id}"><img class="img" src="../../images/pet1.png"></a>
                             </div>
 
                             <div class="pet pet2">
